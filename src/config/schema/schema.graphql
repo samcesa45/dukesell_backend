@@ -1,0 +1,93 @@
+type Query {
+  user: User
+  users: [User]!
+  product(id: ID!): Product
+  products: [Product]!
+}
+
+type Mutation {
+  signup(name: String!, email: String!, password: String!): User
+  login(email: String!, password: String!): AuthData
+  createProduct(name: String!, price: Float!, imageUrl: String!): Product!
+  updateProduct(
+    id: ID!
+    name: String
+    description: String
+    Price: Float
+  ): Product!
+  addToCart(id: ID!): Cart!
+  deleteCart(id: ID!): Cart!
+  createOrder(
+    amount: Float!
+    cardId: String
+    token: String
+    return_uri: String
+  ): Order
+}
+scalar Date
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  products: [Product]
+  carts: [Cart]!
+  orders: [Order]!
+  cards: [Card]!
+  createdAt: Date!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  price: Float!
+  imageUrl: String!
+  user: User!
+  createdAt: Date!
+}
+
+type Cart {
+  id: ID!
+  product: Product!
+  quantity: Int!
+  user: User!
+  createdAt: Date!
+}
+
+type OrderItem {
+  id: ID!
+  product: Product!
+  quantity: Int!
+  user: User!
+  createdAt: Date!
+}
+
+type Order {
+  id: ID!
+  user: User!
+  items: [OrderItem!]!
+  authorize_uri: String
+  createdAt: Date!
+}
+
+type Card {
+  id: ID!
+  cardInfo: CardInfo
+}
+
+type CardInfo {
+  id: ID!
+  expirationMonth: Int!
+  expirationYear: Int!
+  brand: String!
+  last_digits: String!
+}
+
+type AuthData {
+  user: User
+  jwt: String
+}
+
+type Message {
+  message: String!
+}
